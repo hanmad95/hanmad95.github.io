@@ -1,4 +1,13 @@
+# ============================================================================
+# GitHub Pages Build & Deploy Workflow
+# ============================================================================
+# Builds Jekyll site with Chirpy theme and deploys to GitHub Pages.
+# Includes automated link validation and concurrent deployment protection.
+# ============================================================================
+
 name: "Build and Deploy"
+
+# Trigger configuration
 on:
   push:
     branches:
@@ -9,65 +18,81 @@ on:
       - README.md
       - LICENSE
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allow manual workflow trigger from Actions tab
   workflow_dispatch:
 
+# Minimal permissions (principle of least privilege)
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read          # Read repository content
+  pages: write            # Deploy to GitHub Pages
+  id-token: write         # OIDC token for secure authentication
 
-# Allow one concurrent deployment
+# Prevent concurrent deployments to avoid race conditions
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
+  # ========================================================================
+  # BUILD JOB: Compile Jekyll site and validate output
+  # ========================================================================
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Full history for date-based operations
           # submodules: true
-          # If using the 'assets' git submodule from Chirpy Starter, uncomment above
+          # Uncomment if using assets git submodule from Chirpy Starter
           # (See: https://github.com/cotes2020/chirpy-starter/tree/main/assets)
 
-      - name: Setup Pages
+      - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v4
 
-      - name: Setup Ruby
+      # --- Build Environment Setup ---
+      - name: Install Ruby and dependencies
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3
+          ruby-version: 3.4
           bundler-cache: true
 
-      - name: Build site
+      # --- Site Build ---
+      - name: Build Jekyll site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: "production"
 
-      - name: Test site
+      # --- Quality Assurance ---
+      - name: Validate links and HTML
         run: |
           bundle exec htmlproofer _site \
-            \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+            --disable-external \
+            --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+        # Validates all internal links; ignores localhost & external URLs
 
+      # --- Artifact Management ---
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "_site${{ steps.pages.outputs.base_path }}"
 
+  # ========================================================================
+  # DEPLOY JOB: Publish built site to GitHub Pages
+  # ========================================================================
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: build
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
