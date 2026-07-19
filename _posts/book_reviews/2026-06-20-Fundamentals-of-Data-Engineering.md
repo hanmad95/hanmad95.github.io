@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "📚 Book Review: Fundamentals of Data Engineering by Reis & Housley"
-date: 2026-07-19
+date: 2026-06-20
 categories: [Data Engineering, Books]
 tags: [data-architecture, dataops, learning]
 rating: 4
@@ -9,12 +9,9 @@ max_rating: 5
 excerpt: "A review of Fundamentals of Data Engineering by Joe Reis and Matt Housley—why this principle-first book belongs on every data engineer's reading list."
 ---
 
-> **⭐⭐⭐⭐☆ (4/5)**
->
-> **Read this if:** You want to understand the principles behind modern data platforms rather than learn a specific tool.
->
-> **Skip this if:** You're looking for a hands-on programming book filled with code examples and implementation tutorials.
->
+**⭐⭐⭐⭐☆ (4/5)**
+**Read this if:** You want to understand the principles behind modern data platforms rather than learn a specific tool.
+**Skip this if:** You're looking for a hands-on programming book filled with code examples and implementation tutorials.
 > **Note:** The **4/5 rating is based entirely on my personal enjoyment and experience with the book.** It's not an objective measure of its quality, and your opinion may differ depending on your background and expectations.
 
 ![Book Cover](/assets/img/book_reviews/Fundamentals_of_Data_Engineering_Cover.png)
@@ -108,6 +105,8 @@ It won't teach you every cloud service, framework, or programming technique.
 Instead, it teaches something far more valuable: **how to think like a data engineer.**
 
 Because the focus is on principles rather than technologies, I expect this book to remain relevant for many years. That's something few technical books can claim.
+
+>**⭐⭐⭐⭐☆ (4/5)**
 
 ## 🔗  Where to Get the Book
 
