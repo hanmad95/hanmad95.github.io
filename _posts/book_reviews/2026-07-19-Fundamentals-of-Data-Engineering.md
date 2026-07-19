@@ -5,7 +5,7 @@ date: 2026-07-19
 categories: [Data Engineering, Books]
 tags: [data-architecture, dataops, learning]
 rating: 4
-max_raging: 5
+max_rating: 5
 ---
 
 > **About**
